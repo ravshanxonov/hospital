@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>hospital</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        .orqafon {
+            background-color: #081d27;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+        .form-control {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn-success {
+            background: linear-gradient(40deg, #45cafc, #303f9f);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            transition: background 0.3s;
+        }
+        .btn-success:hover {
+            background: linear-gradient(40deg, #303f9f, #45cafc);
+        }
+        .btn-danger {
+            border-radius: 50px;
+            transition: background 0.3s;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .text-body {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<section class="vh-100 orqafon" style="height: 100vh;">
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center h-100" >
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <h2 class="text-uppercase text-center mb-5">Add a Doctor</h2>
+                        <p th:if="${error}" class="text-danger" th:text="${error}"></p>
+                        <form action="/admin/addDoctor" method="post" >
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="form3Example1cg">First Name</label>
+                                <input name="firstname" type="text" id="form3Example1cg" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="form3Example1cg1">Last Name</label>
+                                <input name="lastname" type="text" id="form3Example1cg1" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="form3Example1cg1s">Phone Number</label>
+                                <input name="phonenumber" type="text" id="form3Example1cg1s" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="speciality">Speciality</label>
+                                <select class="form-control" id="speciality" name="specialityId" required>
+                                    <option value="">Select Speciality</option> <!-- Placeholder option -->
+                                    <option th:each="room : ${specialities}" th:value="${room.id}" th:text="${room.name}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="room">Room</label>
+                                <select class="form-control" id="room" name="roomId" required>
+                                    <option value="">Select Room</option> <!-- Placeholder option -->
+                                    <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.name}"></option>
+                                </select>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="form3Example4cg">Password</label>
+                                        <input name="password" type="password" id="form3Example4cg" class="form-control form-control-lg" />
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="form3Example4cdg">Repeat your password</label>
+                                        <input name="passwordRepeat" type="password" id="form3Example4cdg" class="form-control form-control-lg" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-2">
+                                <div class="d-flex justify-content-center col-6">
+                                    <button type="submit" class="btn btn-success btn-block btn-lg text-body">Save</button>
+                                </div>
+                                <div class="d-flex justify-content-center col-6">
+                                    <a href="/admin/doctor" class="btn btn-danger btn-block btn-lg text-body">Back</a>
+                                </div>
+                            </div>
+
+                        </form>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

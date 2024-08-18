@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Clone</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+        .container-fluid {
+            flex: 1;
+            display: flex;
+            padding: 0;
+        }
+        .sidebar {
+            background-color: #0d2d3c;
+            color: #f3f3f3;
+            width: 25%;
+            height: 100%;
+            overflow-y: auto;
+        }
+        .chat-window {
+            background-color: #081d27;
+            width: 75%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .patient-item {
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            width: 100%;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="sidebar p-3">
+
+        <div class="card">
+            <ul class="list-group ">
+                <form action="/doctor/pro" method="get" th:each="amission : ${amissions}" class="text-dark text-center ">
+                    <input type="hidden" name="current" value="0">
+                    <input type="hidden" name="id" th:value="${amission.id}">
+                    <button type="submit"  class="patient-item list-group-item text-center">
+                        <span th:text="${amission.patient.user.getFirstName()}"></span>
+                        <br>
+                        <small th:text="${amission.patient.user.getPhoneNumber()}"></small>
+                    </button>
+                </form>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="chat-window d-flex flex-column">
+        <a href="/login" class="logout-button offset-10">log out</a>
+
+    </div>
+</div>
+</body>
+</html>

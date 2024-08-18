@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 0 15px rgb(8, 29, 39);
+            border-radius: 10px;
+        }
+        .list-group-item {
+            background-color: #081d27;
+            color: #fff;
+        }
+        .list-group-item:hover {
+            background-color: #081d27;
+        }
+        .btn-success {
+            margin-top: 20px;
+        }
+        .btn-logout {
+            background-color: #dc3545;
+            color: #fff;
+            margin-top: 20px;
+        }
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+        table {
+            margin-top: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        body {
+            background-color: #081d27;
+        }
+
+        .container {
+            background: #f3f3f3;
+            padding: 30px;
+            box-shadow: 0 0 15px rgb(8, 29, 39);
+            border-radius :50px;}
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group mt-4">
+                <a href="/admin/doctor" class="list-group-item list-group-item-action">Doctors</a>
+                <a href="/admin/patient" class="list-group-item list-group-item-action">Patients</a>
+                <a href="/admin/room" class="list-group-item list-group-item-action">Rooms</a>
+                <a href="/admin/speciality" class="list-group-item list-group-item-action">Speciality</a>
+            </div>
+            <a href="/login" class="btn btn-logout btn-block">Log Out</a>
+        </div>
+        <div class="col-md-9">
+            <h1 class="text-center">Patients</h1>
+            <a href="/admin/addPatient" class="btn btn-success float-right">Add Patient</a>
+            <table class="table table-striped mt-4">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="patient : ${patients}">
+                    <td th:text="${patient.getId()}"></td>
+                    <td th:text="${patient.user.getFirstName()+' '+patient.user.getLastName()}"></td>
+                    <td th:text="${patient.user.getPhoneNumber()}"></td>
+                    <td>
+                        <form action="/admin/editPatient" method="get" style="display:inline-block;">
+                            <input type="hidden" name="id" th:value="${patient.getId()}">
+                            <button class="btn btn-primary btn-sm">Edit</button>
+                        </form>
+                        <form action="/admin/deletePatient" method="post" style="display:inline-block;">
+                            <input type="hidden" name="id" th:value="${patient.getId()}">
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.querySelector('.btn-logout').addEventListener('click', function() {
+        // Implement logout functionality here
+        window.location.href = '/logout';
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #081d27;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card {
+            border-radius: 10px;
+        }
+
+        .card-header {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .list-group-item {
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .list-group-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item:active {
+            background-color: #1d74b8;
+            color: #1d74b8;
+        }
+
+        .list-group-item-action {
+            background-color: #f3f3f3;
+            padding: 15px 20px;
+            font-size: 1.1em;
+        }
+        </style>
+</head>
+
+<body>
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h1>Super Admin Page</h1>
+        </div>
+        <div class="card-body">
+            <div class="list-group mt-4">
+                <a href="/admin/doctor" class="list-group-item list-group-item-action">Doctors</a>
+                <a href="/admin/patient" class="list-group-item list-group-item-action">Patients</a>
+                <a href="/admin/room" class="list-group-item list-group-item-action">Rooms</a>
+                <a href="/admin/patient" class="list-group-item list-group-item-action">Speciality</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

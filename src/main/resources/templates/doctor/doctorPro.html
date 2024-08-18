@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Clone</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container-fluid {
+            flex: 1;
+            display: flex;
+            padding: 0;
+        }
+        .sidebar {
+            background-color: #0d2d3c;
+            color: #f3f3f3;
+            width: 25%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .chat-window {
+            background-color: #081d27;
+            width: 75%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .form-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .form-group select, .form-group input {
+            height: 45px;
+            font-size: 16px;
+        }
+        .patient-item {
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            width: 100%;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+        .patient-item.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .form-control {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+        }
+        .btn-add, .btn-finish {
+            border-radius: 50px;
+            transition: background 0.3s;
+            padding: 10px 20px;
+        }
+        .btn-add {
+            background: #28a745;
+            color: white;
+        }
+        .btn-add:hover {
+            background: #218838;
+        }
+        .btn-finish {
+            background: #007bff;
+            color: white;
+        }
+        .btn-finish:hover {
+            background: #0056b3;
+        }
+        .total-price {
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="sidebar p-3">
+        <div class="card">
+            <ul class="list-group">
+                <form action="/doctor/pro" method="get" th:each="amission : ${amissions}" th:data-status="${amission.getStatus()}" class="text-dark text-center">
+                    <input type="hidden" name="current" th:value="${current.id}">
+                    <input type="hidden" name="id" th:value="${amission.id}">
+                    <button type="submit" th:classappend="${amission.id == current.id} ? 'active' : ''"
+                            th:disabled="${amission.getStatus() != 'process'}" class="patient-item list-group-item text-center">
+                        <span th:text="${amission.patient.user.getFirstName()}"></span>
+                        <br>
+                        <small th:text="${amission.patient.user.getPhoneNumber()}"></small>
+                    </button>
+                </form>
+            </ul>
+        </div>
+    </div>
+
+    <div class="chat-window d-flex flex-column">
+        <a href="/login" class="logout-button offset-10">Log out</a>
+        <h1 th:text="${current.patient.user.getFirstName() + ' ' + current.patient.user.getLastName()}" class="text-center text-white"></h1>
+        <div class="form-container" id="dynamic-form-container" th:data-status="${current.getStatus()}">
+            <form id="dynamic-form" method="post" action="/doctor/pro">
+                <input type="hidden" name="amissionId" th:value="${current.id}">
+                <div id="input-container"></div> <!-- Dynamic input fields container -->
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="button" class="btn btn-add" onclick="addInputFields()">Add</button>
+                    <button type="submit" class="btn btn-finish">Finish</button>
+                </div>
+            </form>
+        </div>
+        <div class="total-price text-center mt-3" id="total-price">Total: 0</div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const forms = document.querySelectorAll('form[data-status]');
+        forms.forEach(form => {
+            const status = form.getAttribute('data-status');
+            const button = form.querySelector('button[type="submit"]');
+            if (status !== 'process') {
+                button.disabled = true;
+            }
+        });
+
+        const currentFormContainer = document.getElementById('dynamic-form-container');
+        const currentStatus = currentFormContainer.getAttribute('data-status');
+        if (currentStatus !== 'process') {
+            currentFormContainer.style.display = 'none';
+        }
+    });
+
+    function addInputFields() {
+        const inputContainer = document.getElementById('input-container');
+        const formGroup = document.createElement('div');
+        formGroup.classList.add('form-group', 'mb-3', 'd-flex');
+
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.name = 'name';
+        nameInput.placeholder = 'Name';
+        nameInput.classList.add('form-control', 'mr-2');
+
+        const priceInput = document.createElement('input');
+        priceInput.type = 'number';
+        priceInput.name = 'price';
+        priceInput.placeholder = 'Price';
+        priceInput.classList.add('form-control');
+        priceInput.oninput = updateTotalPrice;
+
+        formGroup.appendChild(nameInput);
+        formGroup.appendChild(priceInput);
+        inputContainer.appendChild(formGroup);
+    }
+
+    function updateTotalPrice() {
+        const priceInputs = document.querySelectorAll('input[name="price"]');
+        let total = 0;
+        priceInputs.forEach(input => {
+            const value = parseFloat(input.value);
+            if (!isNaN(value)) {
+                total += value;
+            }
+        });
+        document.getElementById('total-price').innerText = `Total: ${total.toFixed(1)}`;
+    }
+</script>
+</body>
+</html>
